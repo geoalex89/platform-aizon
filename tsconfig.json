@@ -8,7 +8,11 @@
     "skipLibCheck": true,
     "outDir": "./dist",
     "rootDir": "./",
-    "lib": ["ES2023"]
+    "lib": ["ES2023"],
+    "baseUrl": "src",
+    "paths": {
+      "*": ["*"]
+    }
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]

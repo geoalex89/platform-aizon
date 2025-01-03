@@ -56,6 +56,7 @@ npm run dev
 ```bash
 # Unit tests
 npm test
+```
 
 ### Production Build
 
