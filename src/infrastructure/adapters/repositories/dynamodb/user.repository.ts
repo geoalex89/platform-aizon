@@ -14,4 +14,24 @@ export class DynamoDBUserRepository extends DynamoDBRepository<User> implements 
     );
     return results[0] || null;
   }
+
+  async findById(id: string): Promise<User | null> {
+    const results = await this.query(
+      'id = :id',
+      { ':id': id }
+    );
+    return results[0] || null;
+  }
+
+  async create(user: User): Promise<User> {
+    // TODO
+  }
+
+  async update(id: string, user: User): Promise<User> {
+    // TODO
+  }
+
+  async delete(id: string): Promise<boolean> {
+    // TODO
+  }
 }

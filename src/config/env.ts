@@ -8,8 +8,6 @@ const envSchema = z.object({
   MONGODB_URI: z.string(),
   JWT_SECRET: z.string(),
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
-  
-  // Feature flags
   USE_DYNAMODB: z.string().transform(val => val === 'true').default('false'),
   
   // AWS Configuration (optional when USE_DYNAMODB is false)

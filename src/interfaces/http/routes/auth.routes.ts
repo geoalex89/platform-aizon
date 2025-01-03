@@ -14,10 +14,11 @@ export const authRoutes = (authService: AuthService): FastifyPluginAsync => {
       
       try {
         const user = await authService.login(email, password);
-        const token = fastify.jwt.sign({ id: user.id });
+        const token = fastify.jwt.sign({ id: user.user.id });
         return { token };
       } catch (error) {
-        return reply.code(401).send({ error: error.message });
+        const errorMessage = (error as Error).message;
+        return reply.code(401).send({ error: errorMessage });
       }
     });
 
@@ -26,10 +27,11 @@ export const authRoutes = (authService: AuthService): FastifyPluginAsync => {
       
       try {
         const user = await authService.register(email, password);
-        const token = fastify.jwt.sign({ id: user.id });
+        const token = fastify.jwt.sign({ id: user.user.id });
         return { token };
       } catch (error) {
-        return reply.code(400).send({ error: error.message });
+        const errorMessage = (error as Error).message;
+        return reply.code(400).send({ error: errorMessage });
       }
     });
   };

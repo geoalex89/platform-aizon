@@ -11,7 +11,7 @@ import { CognitoAuthAdapter } from '../infrastructure/adapters/auth/cognito.adap
 import { env } from './env';
 
 export function createContainer() {
-  // Initialize repositories based on configuration
+  
   const userRepository = env.USE_DYNAMODB 
     ? new DynamoDBUserRepository()
     : new MongoUserRepository();
@@ -19,11 +19,7 @@ export function createContainer() {
   const screenRepository = new MongoScreenRepository();
   const solutionRepository = new MongoSolutionRepository();
   const widgetRepository = new MongoWidgetRepository();
-  
-  // Initialize auth provider
-  const authProvider = env.USE_DYNAMODB 
-    ? new CognitoAuthAdapter()
-    : undefined;
+  const authProvider = new CognitoAuthAdapter();
   
   // Initialize services
   const authService = new AuthService(userRepository, authProvider);

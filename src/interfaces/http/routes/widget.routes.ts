@@ -17,6 +17,7 @@ const widgetSchema = z.object({
   config: z.record(z.any())
 });
 
+type User = {id: string;};
 const widgetUpdateSchema = widgetSchema.partial();
 
 export const widgetRoutes = (widgetService: WidgetService): FastifyPluginAsync => {
@@ -24,21 +25,28 @@ export const widgetRoutes = (widgetService: WidgetService): FastifyPluginAsync =
     fastify.addHook('onRequest', fastify.authenticate);
 
     fastify.get('/:screenId', async (request) => {
-      return widgetService.getWidgets(request.params.screenId, request.user.id);
+      const params = request.params as { screenId: string };
+      const user = request.user as User;
+      return widgetService.getWidgets(params.screenId, user.id);
     });
 
     fastify.post('/', async (request) => {
       const data = widgetSchema.parse(request.body);
-      return widgetService.createWidget(data, request.user.id);
+      const user = request.user as User;
+      return widgetService.createWidget(data, user.id);
     });
 
     fastify.put('/:id', async (request) => {
+      const params = request.params as { id: string };
       const data = widgetUpdateSchema.parse(request.body);
-      return widgetService.updateWidget(request.params.id, request.user.id, data);
+      const user = request.user as User;
+      return widgetService.updateWidget(params.id, user.id, data);
     });
 
     fastify.delete('/:id', async (request) => {
-      await widgetService.deleteWidget(request.params.id, request.user.id);
+      const params = request.params as { id: string };
+      const user = request.user as User;
+      await widgetService.deleteWidget(params.id, user.id);
       return { success: true };
     });
   };

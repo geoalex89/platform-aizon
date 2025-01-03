@@ -13,36 +13,42 @@ export const solutionRoutes = (solutionService: SolutionService): FastifyPluginA
     fastify.addHook('onRequest', fastify.authenticate);
 
     fastify.get('/', async (request) => {
-      return solutionService.getSolutions(request.user.id);
+      const user = request.user as { id: string };
+      return solutionService.getSolutions(user.id);
     });
 
     fastify.post('/', async (request) => {
+      const user = request.user as { id: string };
       const data = solutionSchema.parse(request.body);
       return solutionService.createSolution({
         ...data,
-        ownerId: request.user.id
+        ownerId: user.id
       });
     });
 
     fastify.put('/:id', async (request, reply) => {
+      const user = request.user as { id: string };
+      const params = request.params as { id: string };
       const data = solutionSchema.parse(request.body);
       try {
         return await solutionService.updateSolution(
-          request.params.id,
-          request.user.id,
+          params.id,
+          user.id,
           data
         );
       } catch (error) {
-        return reply.code(404).send({ error: error.message });
+        return reply.code(404).send({ error: (error as Error).message });
       }
     });
 
     fastify.delete('/:id', async (request, reply) => {
+      const user = request.user as { id: string };
+      const params = request.params as { id: string };
       try {
-        await solutionService.deleteSolution(request.params.id, request.user.id);
+        await solutionService.deleteSolution(params.id, user.id);
         return { success: true };
       } catch (error) {
-        return reply.code(404).send({ error: error.message });
+        return reply.code(404).send({ error: (error as Error).message });
       }
     });
   };

@@ -3,6 +3,7 @@ import { WidgetRepository } from '../../src/domain/ports/repositories/widget.rep
 import { ScreenRepository } from '../../src/domain/ports/repositories/screen.repository';
 import { SolutionRepository } from '../../src/domain/ports/repositories/solution.repository';
 import { WidgetError } from '../../src/domain/errors/widget.error';
+import { jest } from '@jest/globals';
 
 describe('WidgetService', () => {
   let widgetService: WidgetService;
@@ -55,13 +56,17 @@ describe('WidgetService', () => {
     it('should create widget when all validations pass', async () => {
       const screen = {
         id: 'screen1',
+        name: 'Test Screen',
         solutionId: 'solution1',
         layout: { columns: 12, rows: 12 },
         widgetIds: []
       };
       const solution = {
         id: 'solution1',
-        ownerId: userId
+        name: 'Test Solution',
+        ownerId: userId,
+        description: 'A solution for testing', 
+        screenIds: [], 
       };
 
       mockScreenRepository.findById.mockResolvedValue(screen);
