@@ -58,13 +58,6 @@ npm run dev
 npm test
 ```
 
-### Production Build
-
-```bash
-npm run build
-npm start
-```
-
 ## API Documentation
 
 ### Authentication
